@@ -1,0 +1,81 @@
+import { merge } from "lodash";
+import ReactApexChart from "react-apexcharts";
+import PersonIcon from "@mui/icons-material/Person";
+// material
+import { useTheme, styled } from "@mui/material/styles";
+import { Card, Typography, Box } from "@mui/material";
+// utils
+import { fNumber } from "../../../utils/fotmatNumbers";
+import BaseOptionChart from "../../charts/BaseOptionChart";
+
+// ----------------------------------------------------------------------
+
+const RootStyle = styled(Card)(({ theme }) => ({
+  display: "flex",
+  position: "relative",
+  alignItems: "center",
+  padding: theme.spacing(3),
+  backgroundColor: theme.palette.primary.darker,
+}));
+
+const IconStyle = styled("span")(({ theme }) => ({
+  width: 120,
+  height: 120,
+  opacity: 0.12,
+  position: "absolute",
+  right: theme.spacing(-3),
+  color: theme.palette.common.white,
+  "& svg": {
+    height: "100%",
+    width: "100%",
+  },
+}));
+
+// ----------------------------------------------------------------------
+
+const TOTAL = 38566;
+const CHART_DATA = [44];
+
+export default function Widgets1() {
+  const theme = useTheme();
+
+  const chartOptions = merge(BaseOptionChart(), {
+    chart: { sparkline: { enabled: true } },
+    legend: { show: false },
+    plotOptions: {
+      radialBar: {
+        hollow: { size: "78%" },
+        track: { margin: 0 },
+        dataLabels: {
+          name: { show: false },
+          value: {
+            offsetY: 6,
+            color: theme.palette.common.white,
+            fontSize: theme.typography.subtitle2.fontSize,
+          },
+        },
+      },
+    },
+  });
+
+  return (
+    <RootStyle>
+      <ReactApexChart
+        type="radialBar"
+        series={CHART_DATA}
+        options={chartOptions}
+        width={86}
+        height={86}
+      />
+      <Box sx={{ ml: 3, color: "common.white" }}>
+        <Typography variant="h4"> {fNumber(TOTAL)}</Typography>
+        <Typography variant="body2" sx={{ opacity: 0.72 }}>
+          Conversion
+        </Typography>
+      </Box>
+      <IconStyle>
+        <PersonIcon />
+      </IconStyle>
+    </RootStyle>
+  );
+}
